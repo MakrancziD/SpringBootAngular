@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="./bower_components/bootstrap-css-only/css/bootstrap.min.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body ng-app="myApp" xmlns:th="http://www.thymeleaf.org">
+<div class="container" ng-controller="AppController">
+    <div class="page-header">
+        <h1>User list</h1>
+    </div>
+    <div class="alert alert-info" role="alert" ng-hide="users &amp;&amp; users.length > 0">
+        There are no users yet.
+    </div>
+    <form class="form-horizontal" role="form" ng-submit="addUser(newUser)">
+        <div class="form-group" ng-repeat="user in users">
+            <div class="checkbox col-xs-9">
+                <label>
+                    <input type="checkbox" ng-model="user.checked" ng-change="updateUser(user)"/> {{user.username}} {{user.balance}}
+                </label>
+            </div>
+            <div class="col-xs-3">
+                <button type="button" class="btn btn-default pull-left" data-target="#updateModal" data-toggle="modal" ng-click="editModal(user)">Edit</button>
+                <button class="pull-right btn btn-danger" type="button" title="Delete"
+                        ng-click="deleteUser(user)">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </div>
+        </div>
+        <hr />
+        <!--<div class="input-group">-->
+            <!--<input type="text" class="form-control" ng-model="newUser" placeholder="Enter the username..." />-->
+            <!--<input type="text" class="form-control" ng-model="newUser" placeholder="Enter the username..." />-->
+            <!--<span class="input-group-btn">-->
+            <!--<button class="btn btn-default" type="submit" ng-disabled="!newItem" title="Add">-->
+              <!--<span class="glyphicon glyphicon-plus"></span>-->
+            <!--</button>-->
+          <!--</span>-->
+        <!--</div>-->
+        <button type="button" class="btn btn-default pull-left" data-target="#registerUser" data-toggle="modal" ng-click="openModal()">Create user</button>
+    </form>
+
+    <div class="modal fade" id="registerUser" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">New User</h4>
+                </div>
+                <div class="modal-body">
+                <form role="form" name="registerUser">
+                    <div class="form-group">
+                        <label>Username</label>
+                        <input name="username" type="text" placeholder="Name" class="form-control" required ng-model="newUser.username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input name="password" type="password" placeholder="Password" class="form-control" required ng-model="newUser.password" required>
+                    </div>
+                    <div class="form-group" ng-class="{ 'has-error' : registerUser.balance.$invalid && !registerUser.balance.$pristine }">
+                        <label>Balance</label>
+                        <input name="balance" type="number" placeholder="Opening balance" class="form-control" required ng-model="newUser.balance" min="0" required>
+                        <p class="error-message" ng-if="registerUser.balance.$invalid && !registerUser.balance.$pristine">can't have negative balance!</p>
+                    </div>
+                </form>
+            </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-disabled="registerUser.$invalid" ng-click="addUser(newUser)" data-dismiss="modal">Register</button>
+                    <button class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="updateModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit User</h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" name="updateForm">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input name="username" type="text" placeholder="Name" class="form-control" required ng-model="editUser.name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input name="password" type="password" placeholder="Password" class="form-control" required ng-model="editUser.password" required>
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' : updateForm.balance.$invalid && !updateForm.balance.$pristine }">
+                            <label>Balance</label>
+                            <input name="balance" type="number" placeholder="Opening balance" class="form-control" required ng-model="editUser.balance" min="0" required>
+                            <p class="error-message" ng-if="updateForm.balance.$invalid && !updateForm.balance.$pristine">can't have negative balance!</p>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" ng-disabled="updateForm.$invalid" ng-click="updateUser(editUser)" data-dismiss="modal">Edit</button>
+                    <button class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript" src="./bower_components/angular/angular.min.js"></script>
+<script type="text/javascript" src="./bower_components/angular-resource/angular-resource.min.js"></script>
+<script type="text/javascript" src="./bower_components/lodash/dist/lodash.min.js"></script>
+<script type="text/javascript" src="./app/app.js" th:src="@{./app/app.js}"></script>
+<!--<script type="text/javascript" src="./app/controllers.js"></script>-->
+<script type="text/javascript" src="./app/services.js" th:src="@{./app/services.js}"></script>
+<script type="text/javascript" src="./app/controllers.js" th:src="@{./app/controllers.js}"></script>
+</body>
+</html>
