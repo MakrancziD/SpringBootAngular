@@ -10,6 +10,16 @@ public class User {
     @Column
     private String username;
 
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
+    }
+
+    private boolean isAdmin;
+
     public int getId() {
         return id;
     }
@@ -46,4 +56,9 @@ public class User {
     private String password;
     @Column
     private double balance;
+
+    @Override
+    public String toString() {
+        return username+" - "+password+" - "+isAdmin+" - "+balance;
+    }
 }

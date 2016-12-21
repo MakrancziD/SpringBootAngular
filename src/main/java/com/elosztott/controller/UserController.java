@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
     @Autowired
     private UserRepository repo;
 
@@ -21,6 +22,7 @@ public class UserController {
     @RequestMapping(method = RequestMethod.POST)
     public User addItem(@RequestBody User user) {
         //user.setId(null);
+
         return repo.saveAndFlush(user);
     }
 
@@ -34,4 +36,5 @@ public class UserController {
     public void deleteItem(@PathVariable Integer id) {
         repo.delete(id);
     }
+
 }
