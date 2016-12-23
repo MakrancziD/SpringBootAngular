@@ -29,6 +29,8 @@
                 ref="selector" />
     <bean id="selector" class="com.elosztott.integration.JsonFilter" />
 
+
+    <!--add header field to determine JSON type-->
     <int:channel id="HeaderEnricherChannel" />
 
     <int:header-enricher input-channel="HeaderEnricherChannel" output-channel="JsonRouterChannel">
@@ -36,6 +38,8 @@
     </int:header-enricher>
     <bean id="headerEnricher" class="com.elosztott.integration.HeaderEnricher"/>
 
+
+    <!--Route message to the correct type for parsing-->
     <int:channel id="JsonRouterChannel"/>
 
     <int:header-value-router input-channel="JsonRouterChannel" header-name="type">
@@ -47,12 +51,14 @@
 
 <!--TRANSACTION-->
 
+    <!--transform transaction json to object-->
     <int:channel id="TransactionParserChannel"/>
 
     <int:json-to-object-transformer input-channel="TransactionParserChannel"
                                     output-channel="ApplyTransactionChannel"
                                     type="com.elosztott.model.Transaction"/>
-    
+
+    <!--applying transaction through gateway-->
     <int:channel id="ApplyTransactionChannel"/>
 
     <int:gateway id="transactionService" service-interface="com.elosztott.integration.TransactionService"
