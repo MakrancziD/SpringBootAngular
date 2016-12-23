@@ -1,45 +1,71 @@
-(function(angular) {
-    var AppController = function($scope, User) {
-        User.query(function(response) {
-            $scope.users = response ? response : [];
+'use strict';
+
+App.controller('UserController', ['$scope', 'User', function($scope, User) {
+    var self = this;
+    self.user= new User();
+
+    self.users=[];
+
+    self.fetchAllUsers = function(){
+        self.users = User.query();
+    };
+
+    self.createUser = function(){
+        self.user.$save(function(){
+            self.fetchAllUsers();
         });
+    };
 
-        $scope.addUser = function(user) {
-            new User({
-                username: user.username,
-                password: user.password,
-                balance: user.balance
-            }).$save(function(user) {
-                $scope.users.push(user);
+    self.updateUser = function(){
+        self.user.$update(function(){
+            self.fetchAllUsers();
+        });
+    };
+
+    self.deleteUser = function(identity){
+        var user = User.get({id:identity}, function() {
+            user.$delete(function(){
+                console.log('Deleting user with id ', identity);
+                self.fetchAllUsers();
             });
-            $scope.newUser = "";
-        };
+        });
+    };
 
-        $scope.updateUser = function(aUser) {
-            // new User({
-            //     username: user.username,
-            //     password: user.password,
-            //     balance: user.balance})
-                aUser.$update();
-            //$scope.users.updateUser(user)
-        };
+    self.fetchAllUsers();
 
-        $scope.deleteUser = function(user) {
-            user.$remove(function() {
-                $scope.users.splice($scope.users.indexOf(user), 1);
-            });
-        };
+    self.submit = function() {
+        if(self.user.id==null){
+            console.log('Saving New User', self.user);
+            self.createUser();
+        }else{
+            console.log('Upddating user with id ', self.user.id);
+            self.updateUser();
+            console.log('User updated with id ', self.user.id);
+        }
+        self.reset();
+    };
 
-        $scope.openModal=function () {
-            $scope.newUser = null;
-        };
-
-        $scope.editModal=function(user) {
-            $scope.editUser = null;
-            $scope.selectedUser = user;
+    self.edit = function(id){
+        console.log('id to be edited', id);
+        for(var i = 0; i < self.users.length; i++){
+            if(self.users[i].id === id) {
+                self.user = angular.copy(self.users[i]);
+                break;
+            }
         }
     };
 
-    AppController.$inject = ['$scope', 'User'];
-    angular.module("myApp.controllers").controller("AppController", AppController);
-}(angular));
+    self.remove = function(id){
+        console.log('id to be deleted', id);
+        if(self.user.id === id) {
+            self.reset();
+        }
+        self.deleteUser(id);
+    };
+
+    self.reset = function(){
+        self.user= new User();
+        $scope.myForm.$setPristine();
+    };
+
+}]);

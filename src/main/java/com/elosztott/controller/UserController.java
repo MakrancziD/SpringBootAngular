@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -21,8 +21,6 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST)
     public User addItem(@RequestBody User user) {
-        //user.setId(null);
-
         return repo.saveAndFlush(user);
     }
 
@@ -33,7 +31,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteItem(@PathVariable Integer id) {
+    public void deleteItem(@PathVariable("id") Integer id) {
         repo.delete(id);
     }
 

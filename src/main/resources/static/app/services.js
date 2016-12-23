@@ -1,17 +1,16 @@
-(function(angular) {
-    var UserFactory = function($resource) {
-        return $resource('/users/:id', {
-            id: '@id'
-        }, {
+'use strict';
+
+App.factory('User', ['$resource', function ($resource) {
+    return $resource(
+        'http://localhost:8080/user/:id',
+        {id: '@id'},
+        {
             update: {
-                method: "PUT"
+                method: 'PUT'
             },
             remove: {
-                method: "DELETE"
+                method: 'DELETE'
             }
-        });
-    };
-
-    UserFactory.$inject = ['$resource'];
-    angular.module("myApp.services").factory("User", UserFactory);
-}(angular));
+        }
+    );
+}]);

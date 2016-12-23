@@ -2,7 +2,9 @@ package com.elosztott;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import javax.servlet.*;
 
 @SpringBootApplication
 public class SpringBootAngularApplication {
@@ -14,5 +16,4 @@ public class SpringBootAngularApplication {
 
 		SpringApplication.run(SpringBootAngularApplication.class, args);
 	}
-
 }
