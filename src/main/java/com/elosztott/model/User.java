@@ -1,13 +1,17 @@
 package com.elosztott.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class User {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @NotNull
     private int id;
     @Column
+    @NotNull
     private String username;
 
     public boolean isAdmin() {
@@ -55,6 +59,7 @@ public class User {
     @Column
     private String password;
     @Column
+    @Max(10000)
     private double balance;
 
     @Override

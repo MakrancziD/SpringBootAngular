@@ -13,6 +13,7 @@ public class JsonFilter implements MessageSelector {
                 && !((File) message.getPayload()).getName().endsWith(".json")) {
             return false;
         }
+
         return true;
     }
 

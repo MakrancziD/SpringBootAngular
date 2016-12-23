@@ -5,7 +5,10 @@ import java.util.List;
 import com.elosztott.model.User;
 import com.elosztott.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/user")
@@ -20,8 +23,13 @@ public class UserController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public User addItem(@RequestBody User user) {
-        return repo.saveAndFlush(user);
+    public User addItem(@Valid @RequestBody User user, BindingResult result) {
+        User def = new User();
+        if(!result.hasErrors())
+        {
+            def= repo.saveAndFlush(user);
+        }
+        return def;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
